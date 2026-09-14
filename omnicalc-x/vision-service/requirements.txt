@@ -1,0 +1,6 @@
+fastapi==0.115.*
+uvicorn[standard]==0.32.*
+torch==2.4.*
+onnxruntime==1.19.*
+pillow==10.*
+numpy==1.26.*

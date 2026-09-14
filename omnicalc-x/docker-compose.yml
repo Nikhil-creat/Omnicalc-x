@@ -1,0 +1,142 @@
+version: "3.9"
+
+x-common-env: &common-env
+  ENVIRONMENT: ${ENVIRONMENT:-development}
+
+networks:
+  omnicalc-public:
+    driver: bridge
+  omnicalc-internal:
+    driver: bridge
+    internal: true   # backend/vector-db/agent traffic never reaches the host network
+
+volumes:
+  vector-db-data:
+  model-cache:
+
+services:
+
+  # ---------------------------------------------------------------------
+  # frontend — Next.js app (KaTeX/MathJax rendering, canvas handwriting)
+  # ---------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: omnicalc-frontend
+    environment:
+      <<: *common-env
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api-gateway
+    networks:
+      - omnicalc-public
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------
+  # api-gateway — FastAPI async gateway (WebSocket + REST)
+  # ---------------------------------------------------------------------
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: omnicalc-api-gateway
+    environment:
+      <<: *common-env
+      VECTOR_DB_URL: http://vector-db:6333
+      VISION_SERVICE_URL: http://vision-service:8100
+      AGENT_ORCHESTRATOR_URL: http://agent-orchestrator:8200
+    ports:
+      - "8000:8000"
+    depends_on:
+      vector-db:
+        condition: service_healthy
+      vision-service:
+        condition: service_started
+      agent-orchestrator:
+        condition: service_started
+    networks:
+      - omnicalc-public
+      - omnicalc-internal
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------
+  # vision-service — CNN/OCR inference (formula recognition)
+  # ---------------------------------------------------------------------
+  vision-service:
+    build:
+      context: ./vision-service
+      dockerfile: Dockerfile
+    container_name: omnicalc-vision-service
+    environment:
+      <<: *common-env
+      MODEL_CACHE_DIR: /models
+    volumes:
+      - model-cache:/models
+    expose:
+      - "8100"
+    networks:
+      - omnicalc-internal
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 4G
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------
+  # vector-db — Qdrant for RAG (dense + sparse hybrid retrieval)
+  # ---------------------------------------------------------------------
+  vector-db:
+    image: qdrant/qdrant:latest
+    container_name: omnicalc-vector-db
+    volumes:
+      - vector-db-data:/qdrant/storage
+      - ./vector-db/init:/qdrant/init
+    expose:
+      - "6333"
+    networks:
+      - omnicalc-internal
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/6333' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------
+  # agent-orchestrator — LangGraph-style multi-agent reasoning core
+  # ---------------------------------------------------------------------
+  agent-orchestrator:
+    build:
+      context: ./agent-orchestrator
+      dockerfile: Dockerfile
+    container_name: omnicalc-agent-orchestrator
+    environment:
+      <<: *common-env
+      VECTOR_DB_URL: http://vector-db:6333
+    expose:
+      - "8200"
+    depends_on:
+      vector-db:
+        condition: service_healthy
+    networks:
+      - omnicalc-internal
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 2G
+    restart: unless-stopped
