@@ -1,4 +1,25 @@
-# OmniCalc-X — Starter Scaffold
+# OmniCalc-X
+
+An AI-powered problem-solving platform that combines computer vision, multi-agent reasoning, and a modern web interface to ingest, understand, and solve complex problems end-to-end.
+
+## Architecture
+
+omnicalc-x/
+├── frontend/              # Next.js web UI
+├── api-gateway/           # FastAPI gateway
+├── agent-orchestrator/    # Multi-agent reasoning engine
+├── vision-service/        # OCR / Optical Formula Recognition pipeline
+└── docker-compose.yml
+
+## Getting Started
+
+git clone https://github.com/Nikhil-creat/omnicalc-x.git
+cd omnicalc-x
+docker-compose up --build
+
+## License
+
+See LICENSE for details.# OmniCalc-X — Starter Scaffold
 
 **Designed and Developed by Nikhil Chary Sriramoju**
 GitHub: [github.com/Nikhil-creat](https://github.com/Nikhil-creat) · LinkedIn: [in/nikhil-chary-sriramoju](https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a) · Email: nikhilsriramoju66@gmail.com
