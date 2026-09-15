@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NIKHIL CHARY SRIRAMOJU — Computer Science Engineer</title>
-<meta name="description" content="Portfolio of Nikhil Chary Sriramoju: B.Tech CSE engineer building AI and full-stack systems — multi-agent platforms, computer vision, and RAG applications.">
+<meta name="description" content="Portfolio of NIKHIL CHARY SRIRAMOJU: B.Tech CSE engineer building AI and full-stack systems, featuring a live advanced scientific calculator.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -52,20 +52,14 @@
   }
 
   .skip-link {
-    position: absolute;
-    left: -9999px;
-    top: 0;
-    background: var(--gold);
-    color: #0C0A07;
-    padding: 12px 20px;
-    z-index: 100;
-    font-weight: 600;
-    text-decoration: none;
+    position: absolute; left: -9999px; top: 0;
+    background: var(--gold); color: #0C0A07;
+    padding: 12px 20px; z-index: 100; font-weight: 600; text-decoration: none;
   }
   .skip-link:focus { left: 16px; top: 16px; }
 
   a { color: var(--gold-bright); }
-  a:focus-visible, button:focus-visible {
+  a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 3px;
   }
@@ -77,35 +71,17 @@
     border-bottom: 1px solid var(--hairline);
     background: rgba(12, 10, 7, 0.88);
     backdrop-filter: blur(6px);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    position: sticky; top: 0; z-index: 10;
   }
   .site-header .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 14px; padding-bottom: 14px;
   }
-  .site-header .mark {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-muted);
-  }
-  .site-header nav ul {
-    list-style: none;
-    display: flex;
-    gap: 24px;
-    margin: 0;
-    padding: 0;
-  }
+  .site-header .mark { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); }
+  .site-header nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex-wrap: wrap; }
   .site-header nav a {
-    color: var(--text);
-    text-decoration: none;
-    font-size: 0.95rem;
-    border-bottom: 1px solid transparent;
-    padding-bottom: 2px;
+    color: var(--text); text-decoration: none; font-size: 0.92rem;
+    border-bottom: 1px solid transparent; padding-bottom: 2px;
   }
   .site-header nav a:hover { border-bottom-color: var(--gold); }
 
@@ -118,10 +94,7 @@
   }
   .title-block::before, .title-block::after,
   .tb-corner-bl, .tb-corner-br {
-    content: "";
-    position: absolute;
-    width: 14px;
-    height: 14px;
+    content: ""; position: absolute; width: 14px; height: 14px;
     border: 1.5px solid var(--gold);
   }
   .title-block::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
@@ -131,74 +104,40 @@
 
   .title-block-main {
     padding: 40px 32px 28px;
-    opacity: 0;
-    transform: translateY(6px);
+    opacity: 0; transform: translateY(6px);
     animation: reveal 0.6s ease-out 0.1s forwards;
   }
   @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
 
-  .eyebrow-field {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-  }
+  .eyebrow-field { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
   h1 {
     font-family: var(--font-display);
     font-size: clamp(2rem, 5vw, 3.1rem);
-    line-height: 1.08;
-    margin: 0 0 12px;
-    font-weight: 600;
-    max-width: 14ch;
+    line-height: 1.08; margin: 0 0 12px; font-weight: 600; max-width: 14ch;
     background: linear-gradient(100deg, var(--text) 40%, var(--gold-bright));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .role-line {
-    font-size: 1.15rem;
-    color: var(--text-muted);
-    max-width: 46ch;
-    margin: 0 0 28px;
-  }
+  .role-line { font-size: 1.15rem; color: var(--text-muted); max-width: 46ch; margin: 0 0 28px; }
 
-  .tb-fields {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    border-top: 1px solid var(--hairline);
-  }
+  .tb-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); border-top: 1px solid var(--hairline); }
   .tb-field { border-right: 1px solid var(--hairline); padding: 16px 32px; }
   .tb-field:last-child { border-right: none; }
   .tb-field dt { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin: 0 0 6px; }
   .tb-field dd { margin: 0; font-size: 0.98rem; }
-  .tb-field a {
-    text-decoration: underline;
-    text-decoration-color: var(--hairline);
-    text-underline-offset: 3px;
-  }
+  .tb-field a { text-decoration: underline; text-decoration-color: var(--hairline); text-underline-offset: 3px; }
   .tb-field a:hover { text-decoration-color: var(--gold-bright); }
 
   /* ---------- Sections ---------- */
   .section { margin-top: 72px; }
   .section-head {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    margin-bottom: 28px;
-    border-bottom: 1px solid var(--hairline);
-    padding-bottom: 14px;
+    display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px;
+    border-bottom: 1px solid var(--hairline); padding-bottom: 14px;
   }
   .section-head h2 { font-family: var(--font-display); font-size: 1.5rem; margin: 0; font-weight: 600; }
   .section-head .tag { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
 
   /* ---------- Project sheets ---------- */
-  .sheet {
-    border: 1px solid var(--hairline);
-    background: var(--bg-panel);
-    margin-bottom: 20px;
-    padding: 26px 28px;
-    position: relative;
-  }
+  .sheet { border: 1px solid var(--hairline); background: var(--bg-panel); margin-bottom: 20px; padding: 26px 28px; position: relative; }
   .sheet-no { font-family: var(--font-mono); font-size: 0.78rem; color: var(--gold-bright); margin-bottom: 8px; }
   .sheet h3 { font-family: var(--font-display); font-size: 1.25rem; margin: 0 0 10px; font-weight: 600; }
   .sheet p.desc { margin: 0 0 16px; color: var(--text); max-width: 68ch; }
@@ -210,185 +149,139 @@
   .sheet-link.pending { color: var(--text-muted); border-bottom-color: var(--hairline); }
 
   /* ---------- Calculator ---------- */
-  .calc-wrap {
-    border: 1px solid var(--hairline);
-    background: var(--bg-panel);
-    padding: 24px;
-  }
+  .calc-wrap { border: 1px solid var(--hairline); background: var(--bg-panel); padding: 24px; }
   .calc-shell {
-    max-width: 420px;
-    margin: 0 auto;
-    border: 1px solid var(--gold-dim);
-    border-radius: 14px;
-    padding: 18px;
+    max-width: 480px; margin: 0 auto; border: 1px solid var(--gold-dim); border-radius: 14px; padding: 18px;
     background: linear-gradient(180deg, #1B160C, #100D08);
     box-shadow: 0 0 0 1px rgba(217, 174, 82, 0.08), 0 20px 50px -20px rgba(0,0,0,0.6);
   }
   .calc-display {
-    background: #070604;
-    border: 1px solid var(--hairline);
-    border-radius: 8px;
-    padding: 18px 16px;
-    margin-bottom: 14px;
-    text-align: right;
-    overflow: hidden;
+    background: #070604; border: 1px solid var(--hairline); border-radius: 8px;
+    padding: 18px 16px; margin-bottom: 12px; text-align: right; overflow: hidden;
   }
-  .calc-expr {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    min-height: 18px;
-    white-space: nowrap;
-    overflow-x: auto;
-  }
-  .calc-result {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    color: var(--gold-bright);
-    min-height: 40px;
-    white-space: nowrap;
-    overflow-x: auto;
-  }
-  .calc-modes {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
+  .calc-expr { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); min-height: 18px; white-space: nowrap; overflow-x: auto; }
+  .calc-result { font-family: var(--font-display); font-size: 1.9rem; color: var(--gold-bright); min-height: 38px; white-space: nowrap; overflow-x: auto; }
+  .calc-mem-badge { font-family: var(--font-mono); font-size: 0.7rem; color: var(--gold); float: left; margin-top: 4px; }
+
+  .calc-modes { display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
+  .mode-group { display: flex; gap: 6px; flex: 1; min-width: 140px; }
   .mode-btn {
-    flex: 1;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    background: transparent;
-    border: 1px solid var(--hairline);
-    color: var(--text-muted);
-    border-radius: 6px;
-    padding: 6px 0;
-    cursor: pointer;
+    flex: 1; font-family: var(--font-mono); font-size: 0.72rem; background: transparent;
+    border: 1px solid var(--hairline); color: var(--text-muted); border-radius: 6px; padding: 6px 0; cursor: pointer;
   }
-  .mode-btn[aria-pressed="true"] {
-    border-color: var(--gold);
-    color: var(--gold-bright);
-    background: rgba(217, 174, 82, 0.08);
+  .mode-btn[aria-pressed="true"] { border-color: var(--gold); color: var(--gold-bright); background: rgba(217, 174, 82, 0.08); }
+
+  .calc-section-label {
+    font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+    margin: 14px 0 6px; text-transform: lowercase;
   }
-  .calc-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-  }
+  .calc-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .calc-keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 6px; }
+
   .calc-btn {
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    padding: 14px 0;
-    border-radius: 8px;
-    border: 1px solid var(--hairline);
-    background: #1D1710;
-    color: var(--text);
-    cursor: pointer;
+    font-family: var(--font-body); font-size: 0.85rem; padding: 10px 0; border-radius: 7px;
+    border: 1px solid var(--hairline); background: #1D1710; color: var(--text); cursor: pointer;
     transition: background 0.15s ease, transform 0.05s ease;
   }
+  .calc-keypad .calc-btn { font-size: 1rem; padding: 15px 0; }
   .calc-btn:hover { background: #29200F; }
   .calc-btn:active { transform: scale(0.96); }
-  .calc-btn.fn { color: var(--text-muted); font-size: 0.82rem; }
+  .calc-btn.fn { color: var(--text-muted); font-size: 0.72rem; }
+  .calc-keypad .calc-btn.fn { font-size: 0.85rem; }
   .calc-btn.op { color: var(--gold-bright); border-color: var(--gold-dim); }
+  .calc-btn.mem { color: var(--gold); }
   .calc-btn.equals {
-    grid-column: span 3;
+    grid-column: span 4;
     background: linear-gradient(100deg, var(--gold-dim), var(--gold));
-    color: #14110A;
-    font-weight: 600;
-    border: none;
+    color: #14110A; font-weight: 600; border: none;
   }
   .calc-btn.equals:hover { background: linear-gradient(100deg, var(--gold), var(--gold-bright)); }
-  .calc-note {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    margin-top: 14px;
-    text-align: center;
+  .calc-note { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 14px; text-align: center; line-height: 1.5; }
+
+  /* ---------- History ---------- */
+  .history-panel { margin-top: 18px; border-top: 1px solid var(--hairline); padding-top: 12px; }
+  .history-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .history-head span { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
+  .history-clear { background: none; border: none; color: var(--text-muted); font-size: 0.72rem; text-decoration: underline; cursor: pointer; font-family: var(--font-mono); }
+  .history-clear:hover { color: var(--gold-bright); }
+  .history-list { list-style: none; margin: 0; padding: 0; max-height: 160px; overflow-y: auto; }
+  .history-list li { font-family: var(--font-mono); font-size: 0.78rem; padding: 6px 0; border-bottom: 1px solid var(--grid-line); }
+  .history-list button {
+    background: none; border: none; color: var(--text); text-align: left; width: 100%;
+    cursor: pointer; padding: 0; font-family: inherit; font-size: inherit;
   }
+  .history-list button:hover { color: var(--gold-bright); }
+  .history-empty { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
+
+  /* ---------- Feedback ---------- */
+  .feedback-wrap { border: 1px solid var(--hairline); background: var(--bg-panel); padding: 28px; }
+  .feedback-wrap label { display: block; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
+  .feedback-wrap input, .feedback-wrap textarea {
+    width: 100%; background: #0F0C08; border: 1px solid var(--hairline); border-radius: 6px;
+    padding: 10px 12px; color: var(--text); font-family: var(--font-body); font-size: 0.95rem; margin-bottom: 16px;
+  }
+  .feedback-wrap textarea { min-height: 100px; resize: vertical; }
+  .feedback-submit {
+    background: linear-gradient(100deg, var(--gold-dim), var(--gold)); color: #14110A; font-weight: 600;
+    border: none; border-radius: 6px; padding: 12px 24px; cursor: pointer; font-family: var(--font-body); font-size: 0.95rem;
+  }
+  .feedback-submit:hover { background: linear-gradient(100deg, var(--gold), var(--gold-bright)); }
+  .feedback-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-top: 12px; }
+
+  /* ---------- Support / UPI ---------- */
+  .support-wrap {
+    border: 1px solid var(--gold-dim); background: linear-gradient(160deg, #1B160C 0%, #100D08 70%);
+    padding: 32px 28px; display: flex; gap: 28px; flex-wrap: wrap; align-items: center;
+  }
+  .support-info { flex: 1; min-width: 220px; }
+  .support-info h3 { font-family: var(--font-display); font-size: 1.2rem; margin: 0 0 8px; }
+  .support-info p { color: var(--text-muted); margin: 0 0 18px; font-size: 0.92rem; }
+  .upi-row {
+    display: flex; align-items: center; gap: 10px; border: 1px solid var(--hairline);
+    border-radius: 8px; padding: 10px 14px; background: rgba(217, 174, 82, 0.05); margin-bottom: 10px;
+  }
+  .upi-row code { font-family: var(--font-mono); font-size: 0.88rem; color: var(--gold-bright); flex: 1; word-break: break-all; }
+  .copy-btn {
+    background: transparent; border: 1px solid var(--gold-dim); color: var(--gold-bright);
+    border-radius: 6px; padding: 6px 12px; font-size: 0.78rem; cursor: pointer; font-family: var(--font-mono); white-space: nowrap;
+  }
+  .copy-btn:hover { border-color: var(--gold); background: rgba(217, 174, 82, 0.1); }
+  .qr-box { text-align: center; flex-shrink: 0; }
+  .qr-box img { border-radius: 10px; border: 1px solid var(--hairline); background: #fff; padding: 8px; width: 180px; height: 180px; }
+  .qr-box p { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; }
 
   /* ---------- About the Builder footer ---------- */
-  footer { margin-top: 88px; padding: 0 0 64px; }
-  .builder-card {
-    position: relative;
-    border: 1px solid var(--gold-dim);
-    background: linear-gradient(160deg, #1B160C 0%, #100D08 70%);
-    padding: 40px 36px;
-    overflow: hidden;
-  }
+  footer { margin-top: 72px; padding: 0 0 64px; }
+  .builder-card { position: relative; border: 1px solid var(--gold-dim); background: linear-gradient(160deg, #1B160C 0%, #100D08 70%); padding: 40px 36px; overflow: hidden; }
   .builder-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    padding: 1px;
-    border-radius: inherit;
+    content: ""; position: absolute; inset: 0; padding: 1px; border-radius: inherit;
     background: linear-gradient(120deg, transparent 30%, rgba(240, 198, 116, 0.5), transparent 70%);
     background-size: 220% 220%;
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    animation: shine 6s linear infinite;
-    pointer-events: none;
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: shine 6s linear infinite; pointer-events: none;
   }
-  @keyframes shine {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 220% 220%; }
-  }
-  .builder-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--gold-bright);
-    letter-spacing: 0.02em;
-    margin: 0 0 10px;
-  }
-  .builder-name {
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 4vw, 2.2rem);
-    font-weight: 700;
-    margin: 0 0 6px;
-    color: var(--text);
-  }
-  .builder-role {
-    color: var(--text-muted);
-    margin: 0 0 24px;
-    font-size: 1rem;
-  }
-  .builder-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-  }
+  @keyframes shine { 0% { background-position: 0% 0%; } 100% { background-position: 220% 220%; } }
+  .builder-eyebrow { font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold-bright); margin: 0 0 10px; }
+  .builder-name { font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; margin: 0 0 6px; color: var(--text); }
+  .builder-role { color: var(--text-muted); margin: 0 0 24px; font-size: 1rem; }
+  .builder-links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
   .builder-links a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--text);
-    font-size: 0.95rem;
-    border: 1px solid var(--hairline);
-    padding: 12px 14px;
-    border-radius: 8px;
-    background: rgba(217, 174, 82, 0.04);
+    display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-size: 0.95rem;
+    border: 1px solid var(--hairline); padding: 12px 14px; border-radius: 8px; background: rgba(217, 174, 82, 0.04);
     transition: border-color 0.15s ease, background 0.15s ease;
   }
-  .builder-links a:hover {
-    border-color: var(--gold);
-    background: rgba(217, 174, 82, 0.1);
-  }
-  .builder-links .glyph {
-    font-size: 1.1rem;
-    flex-shrink: 0;
-  }
+  .builder-links a:hover { border-color: var(--gold); background: rgba(217, 174, 82, 0.1); }
+  .builder-links .glyph { font-size: 1.1rem; flex-shrink: 0; }
 
   @media (max-width: 560px) {
     .title-block-main { padding: 32px 20px 20px; }
     .tb-field { padding: 14px 20px; }
     .sheet { padding: 22px 18px; }
-    .calc-grid { gap: 6px; }
-    .calc-btn { padding: 12px 0; font-size: 0.85rem; }
+    .calc-grid { grid-template-columns: repeat(4, 1fr); }
+    .calc-btn.equals { grid-column: span 4; }
     .builder-card { padding: 30px 22px; }
+    .support-wrap { flex-direction: column; }
   }
 </style>
 </head>
@@ -403,6 +296,8 @@
       <ul>
         <li><a href="#calculator">Calculator</a></li>
         <li><a href="#work">Work</a></li>
+        <li><a href="#feedback">Feedback</a></li>
+        <li><a href="#support">Support</a></li>
         <li><a href="#builder">About</a></li>
       </ul>
     </nav>
@@ -430,21 +325,45 @@
 
     <section class="section" id="calculator" aria-labelledby="calc-heading">
       <div class="section-head">
-        <h2 id="calc-heading">Scientific calculator</h2>
+        <h2 id="calc-heading">Advanced scientific calculator</h2>
         <span class="tag">live, client-side</span>
       </div>
       <div class="calc-wrap">
         <div class="calc-shell">
           <div class="calc-display">
+            <div class="calc-mem-badge" id="calcMemBadge" aria-hidden="true">&nbsp;</div>
             <div class="calc-expr" id="calcExpr" aria-hidden="true">&nbsp;</div>
             <div class="calc-result" id="calcResult" role="status" aria-live="polite">0</div>
           </div>
+
           <div class="calc-modes">
-            <button class="mode-btn" id="degBtn" aria-pressed="true" type="button">deg</button>
-            <button class="mode-btn" id="radBtn" aria-pressed="false" type="button">rad</button>
+            <div class="mode-group" role="group" aria-label="Angle unit">
+              <button class="mode-btn" id="degBtn" aria-pressed="true" type="button">deg</button>
+              <button class="mode-btn" id="radBtn" aria-pressed="false" type="button">rad</button>
+            </div>
+            <div class="mode-group" role="group" aria-label="Number format">
+              <button class="mode-btn" id="inBtn" aria-pressed="true" type="button">in (lakh/crore)</button>
+              <button class="mode-btn" id="intlBtn" aria-pressed="false" type="button">intl (thousand/million)</button>
+            </div>
           </div>
-          <div class="calc-grid" id="calcGrid" role="group" aria-label="Calculator buttons"></div>
-          <p class="calc-note">Evaluates real expressions — trig, logs, roots, powers, factorials — to full decimal precision.</p>
+
+          <p class="calc-section-label">functions</p>
+          <div class="calc-grid" id="calcFnGrid" role="group" aria-label="Scientific functions"></div>
+
+          <p class="calc-section-label">keypad</p>
+          <div class="calc-keypad" id="calcKeypad" role="group" aria-label="Number keypad"></div>
+
+          <p class="calc-note">mod(a,b), nCr(n,r) and nPr(n,r) take two comma-separated arguments, e.g. ncr(10,3). Ans recalls the last result.</p>
+
+          <div class="history-panel">
+            <div class="history-head">
+              <span>history</span>
+              <button class="history-clear" id="historyClear" type="button">clear</button>
+            </div>
+            <ul class="history-list" id="historyList">
+              <li class="history-empty">No calculations yet this session.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -460,360 +379,4 @@
         <h3>OmniCalc-X</h3>
         <p class="status">In development</p>
         <p class="desc">A scientific computing platform that fuses a multi-agent reasoning core (planner, executor, verifier, synthesizer) with computer-vision formula recognition and retrieval-augmented knowledge lookup, behind a FastAPI gateway and Next.js frontend.</p>
-        <ul class="stack"><li>Next.js</li><li>FastAPI</li><li>Anthropic API</li><li>Qdrant</li><li>Docker Compose</li></ul>
-        <span class="sheet-link pending">Repository pending publication</span>
-      </article>
-
-      <article class="sheet">
-        <p class="sheet-no">No. 02</p>
-        <h3>AI Multi-Agent Support &amp; Automation Platform</h3>
-        <p class="status">Shipped</p>
-        <p class="desc">A retrieval-augmented support agent: documents are chunked and embedded into a vector store, then answered by a coordinated retrieval → reasoning → response agent pipeline with a live analytics dashboard.</p>
-        <ul class="stack"><li>Streamlit</li><li>LangChain</li><li>ChromaDB</li><li>Gemini API</li><li>SQLite</li></ul>
-        <a class="sheet-link" href="https://github.com/Nikhil-creat/AI-MultiAgent-Support-Platform">View repository</a>
-      </article>
-
-      <article class="sheet">
-        <p class="sheet-no">No. 03</p>
-        <h3>AI Surveillance &amp; Alert System</h3>
-        <p class="status">Shipped</p>
-        <p class="desc">Real-time person detection with YOLOv8, layered face and eye detection, and instant Telegram photo alerts, monitored through a Streamlit dashboard with a live detection log.</p>
-        <ul class="stack"><li>YOLOv8</li><li>OpenCV</li><li>Streamlit</li><li>Telegram Bot API</li></ul>
-        <a class="sheet-link" href="https://github.com/Nikhil-creat/AI-Surveillance-Alert-System">View repository</a>
-      </article>
-
-      <article class="sheet">
-        <p class="sheet-no">No. 04</p>
-        <h3>SmartCity AI — Unified Urban Intelligence Platform</h3>
-        <p class="status">Built, awaiting publication</p>
-        <p class="desc">A city-operations command center: CV-based traffic and crowd detection, simulated IoT sensor feeds, Isolation Forest anomaly detection, a live Folium map, and an LLM assistant for city-ops queries, unified in one dashboard.</p>
-        <ul class="stack"><li>FastAPI</li><li>OpenCV</li><li>Isolation Forest</li><li>Folium</li><li>Docker</li></ul>
-        <span class="sheet-link pending">Repository pending publication</span>
-      </article>
-    </section>
-
-  </div>
-
-  <footer id="builder">
-    <div class="wrap">
-      <div class="builder-card">
-        <p class="builder-eyebrow">👤 About the builder</p>
-        <p class="builder-name">NIKHIL CHARY SRIRAMOJU</p>
-        <p class="builder-role">B.Tech Final Year — Computer Science &amp; Engineering</p>
-        <ul class="builder-links">
-          <li><a href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a"><span class="glyph" aria-hidden="true">🔗</span> LinkedIn: nikhil-chary-sriramoju</a></li>
-          <li><a href="https://github.com/Nikhil-creat"><span class="glyph" aria-hidden="true">💻</span> GitHub: Nikhil-creat</a></li>
-          <li><a href="mailto:sriramojunikhil66@gmail.com"><span class="glyph" aria-hidden="true">📧</span> sriramojunikhil66@gmail.com</a></li>
-          <li><a href="https://www.instagram.com/nikhil__sriramoju"><span class="glyph" aria-hidden="true">📸</span> Instagram: nikhil__sriramoju</a></li>
-        </ul>
-      </div>
-    </div>
-  </footer>
-</main>
-
-<script>
-(function () {
-  "use strict";
-
-  /* ---------------- Expression parser & evaluator ---------------- */
-  function tokenize(str) {
-    const tokens = [];
-    let i = 0;
-    while (i < str.length) {
-      const c = str[i];
-      if (/\s/.test(c)) { i++; continue; }
-      if (/[0-9.]/.test(c)) {
-        let num = c; i++;
-        while (i < str.length && /[0-9.]/.test(str[i])) { num += str[i]; i++; }
-        tokens.push({ type: "num", value: parseFloat(num) });
-        continue;
-      }
-      if (/[a-zA-Z]/.test(c)) {
-        let name = c; i++;
-        while (i < str.length && /[a-zA-Z]/.test(str[i])) { name += str[i]; i++; }
-        tokens.push({ type: "id", value: name });
-        continue;
-      }
-      if ("+-*/^()!%,".includes(c)) {
-        tokens.push({ type: "op", value: c });
-        i++;
-        continue;
-      }
-      throw new Error("Unexpected character: " + c);
-    }
-    return tokens;
-  }
-
-  const FUNCTIONS = ["sin", "cos", "tan", "asin", "acos", "atan", "log", "ln", "sqrt", "abs", "exp", "cbrt"];
-  const CONSTANTS = { pi: Math.PI, e: Math.E };
-
-  function Parser(tokens, degreeMode) {
-    this.tokens = tokens;
-    this.pos = 0;
-    this.degreeMode = degreeMode;
-  }
-  Parser.prototype.peek = function () { return this.tokens[this.pos]; };
-  Parser.prototype.next = function () { return this.tokens[this.pos++]; };
-
-  Parser.prototype.parseExpression = function () {
-    let value = this.parseTerm();
-    while (this.peek() && this.peek().type === "op" && (this.peek().value === "+" || this.peek().value === "-")) {
-      const op = this.next().value;
-      const rhs = this.parseTerm();
-      value = op === "+" ? value + rhs : value - rhs;
-    }
-    return value;
-  };
-
-  Parser.prototype.parseTerm = function () {
-    let value = this.parseFactor();
-    while (this.peek() && this.peek().type === "op" && (this.peek().value === "*" || this.peek().value === "/")) {
-      const op = this.next().value;
-      const rhs = this.parseFactor();
-      value = op === "*" ? value * rhs : value / rhs;
-    }
-    return value;
-  };
-
-  Parser.prototype.parseFactor = function () {
-    const base = this.parseUnary();
-    if (this.peek() && this.peek().type === "op" && this.peek().value === "^") {
-      this.next();
-      const exponent = this.parseFactor(); // right-associative
-      return Math.pow(base, exponent);
-    }
-    return base;
-  };
-
-  Parser.prototype.parseUnary = function () {
-    if (this.peek() && this.peek().type === "op" && (this.peek().value === "-" || this.peek().value === "+")) {
-      const op = this.next().value;
-      const val = this.parseUnary();
-      return op === "-" ? -val : val;
-    }
-    return this.parsePostfix();
-  };
-
-  Parser.prototype.parsePostfix = function () {
-    let value = this.parsePrimary();
-    while (this.peek() && this.peek().type === "op" && (this.peek().value === "!" || this.peek().value === "%")) {
-      const op = this.next().value;
-      value = op === "!" ? factorial(value) : value / 100;
-    }
-    return value;
-  };
-
-  Parser.prototype.parsePrimary = function () {
-    const tok = this.peek();
-    if (!tok) throw new Error("Unexpected end of expression");
-
-    if (tok.type === "num") { this.next(); return tok.value; }
-
-    if (tok.type === "op" && tok.value === "(") {
-      this.next();
-      const val = this.parseExpression();
-      if (!(this.peek() && this.peek().value === ")")) throw new Error("Expected )");
-      this.next();
-      return val;
-    }
-
-    if (tok.type === "id") {
-      const name = tok.value.toLowerCase();
-      this.next();
-      if (CONSTANTS.hasOwnProperty(name)) return CONSTANTS[name];
-      if (FUNCTIONS.includes(name)) {
-        if (!(this.peek() && this.peek().value === "(")) throw new Error("Expected ( after " + name);
-        this.next();
-        const arg = this.parseExpression();
-        if (!(this.peek() && this.peek().value === ")")) throw new Error("Expected )");
-        this.next();
-        return applyFunction(name, arg, this.degreeMode);
-      }
-      throw new Error("Unknown identifier: " + name);
-    }
-
-    throw new Error("Unexpected token: " + tok.value);
-  };
-
-  function factorial(n) {
-    if (n < 0 || !Number.isFinite(n)) return NaN;
-    if (Math.abs(n - Math.round(n)) > 1e-9) return NaN; // integers only
-    n = Math.round(n);
-    let result = 1;
-    for (let i = 2; i <= n; i++) result *= i;
-    return result;
-  }
-
-  function applyFunction(name, arg, degreeMode) {
-    const toRad = (v) => (degreeMode ? (v * Math.PI) / 180 : v);
-    const fromRad = (v) => (degreeMode ? (v * 180) / Math.PI : v);
-    switch (name) {
-      case "sin": return Math.sin(toRad(arg));
-      case "cos": return Math.cos(toRad(arg));
-      case "tan": return Math.tan(toRad(arg));
-      case "asin": return fromRad(Math.asin(arg));
-      case "acos": return fromRad(Math.acos(arg));
-      case "atan": return fromRad(Math.atan(arg));
-      case "log": return Math.log10(arg);
-      case "ln": return Math.log(arg);
-      case "sqrt": return Math.sqrt(arg);
-      case "cbrt": return Math.cbrt(arg);
-      case "abs": return Math.abs(arg);
-      case "exp": return Math.exp(arg);
-      default: return NaN;
-    }
-  }
-
-  function evaluate(expr, degreeMode) {
-    const tokens = tokenize(expr);
-    const parser = new Parser(tokens, degreeMode);
-    const value = parser.parseExpression();
-    if (parser.pos !== tokens.length) throw new Error("Unexpected trailing input");
-    return value;
-  }
-
-  function formatResult(num) {
-    if (!Number.isFinite(num)) return "Error";
-    const rounded = parseFloat(num.toPrecision(12));
-    return rounded.toString();
-  }
-
-  /* ---------------- UI wiring ---------------- */
-  const exprEl = document.getElementById("calcExpr");
-  const resultEl = document.getElementById("calcResult");
-  const gridEl = document.getElementById("calcGrid");
-  const degBtn = document.getElementById("degBtn");
-  const radBtn = document.getElementById("radBtn");
-
-  let buffer = "";
-  let degreeMode = true;
-
-  const BUTTONS = [
-    { label: "C", insert: null, action: "clear" },
-    { label: "⌫", insert: null, action: "back" },
-    { label: "(", insert: "(" },
-    { label: ")", insert: ")" },
-    { label: "÷", insert: "/", cls: "op" },
-
-    { label: "sin", insert: "sin(", cls: "fn" },
-    { label: "cos", insert: "cos(", cls: "fn" },
-    { label: "tan", insert: "tan(", cls: "fn" },
-    { label: "√", insert: "sqrt(", cls: "fn" },
-    { label: "×", insert: "*", cls: "op" },
-
-    { label: "log", insert: "log(", cls: "fn" },
-    { label: "ln", insert: "ln(", cls: "fn" },
-    { label: "^", insert: "^", cls: "op" },
-    { label: "!", insert: "!", cls: "op" },
-    { label: "−", insert: "-", cls: "op" },
-
-    { label: "7", insert: "7" },
-    { label: "8", insert: "8" },
-    { label: "9", insert: "9" },
-    { label: "%", insert: "%", cls: "op" },
-    { label: "+", insert: "+", cls: "op" },
-
-    { label: "4", insert: "4" },
-    { label: "5", insert: "5" },
-    { label: "6", insert: "6" },
-    { label: "π", insert: "pi" },
-    { label: "e", insert: "e" },
-
-    { label: "1", insert: "1" },
-    { label: "2", insert: "2" },
-    { label: "3", insert: "3" },
-    { label: "0", insert: "0" },
-    { label: ".", insert: "." },
-
-    { label: "=", insert: null, action: "equals", cls: "equals", span: 3 },
-  ];
-
-  BUTTONS.forEach((b) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "calc-btn" + (b.cls ? " " + b.cls : "");
-    btn.textContent = b.label;
-    if (b.span) btn.style.gridColumn = "span " + b.span;
-    btn.setAttribute("aria-label", ariaLabelFor(b.label));
-    btn.addEventListener("click", () => handlePress(b));
-    gridEl.appendChild(btn);
-  });
-
-  function ariaLabelFor(label) {
-    const names = { "÷": "divide", "×": "multiply", "−": "minus", "√": "square root", "^": "power", "!": "factorial", "π": "pi", "=": "equals", "⌫": "backspace" };
-    return names[label] || label;
-  }
-
-  function handlePress(b) {
-    if (b.action === "clear") {
-      buffer = "";
-      updateDisplay("0");
-      return;
-    }
-    if (b.action === "back") {
-      buffer = buffer.slice(0, -1);
-      renderExpr();
-      return;
-    }
-    if (b.action === "equals") {
-      compute();
-      return;
-    }
-    buffer += b.insert;
-    renderExpr();
-  }
-
-  function renderExpr() {
-    exprEl.textContent = prettify(buffer) || "\u00A0";
-  }
-
-  function prettify(str) {
-    return str.replace(/\*/g, "×").replace(/\//g, "÷");
-  }
-
-  function compute() {
-    if (!buffer.trim()) return;
-    try {
-      const value = evaluate(buffer, degreeMode);
-      updateDisplay(formatResult(value));
-    } catch (err) {
-      updateDisplay("Error");
-    }
-  }
-
-  function updateDisplay(text) {
-    resultEl.textContent = text;
-  }
-
-  degBtn.addEventListener("click", () => setMode(true));
-  radBtn.addEventListener("click", () => setMode(false));
-  function setMode(isDegree) {
-    degreeMode = isDegree;
-    degBtn.setAttribute("aria-pressed", String(isDegree));
-    radBtn.setAttribute("aria-pressed", String(!isDegree));
-  }
-
-  document.addEventListener("keydown", (e) => {
-    if (!document.getElementById("calculator").contains(document.activeElement) &&
-        document.activeElement !== document.body) return;
-    if (/^[0-9.+\-*/^()%]$/.test(e.key)) {
-      buffer += e.key;
-      renderExpr();
-    } else if (e.key === "Enter" || e.key === "=") {
-      e.preventDefault();
-      compute();
-    } else if (e.key === "Backspace") {
-      buffer = buffer.slice(0, -1);
-      renderExpr();
-    } else if (e.key === "Escape") {
-      buffer = "";
-      updateDisplay("0");
-    }
-  });
-
-  updateDisplay("0");
-})();
-</script>
-
-</body>
-</html>
+        <ul c
