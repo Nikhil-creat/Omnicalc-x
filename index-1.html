@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Scientific Calculator — Nikhil Chary Sriramoju</title>
+<meta name="description" content="A live, advanced scientific calculator with calculation history, Indian and International number formats, and UPI support — built by Nikhil Chary Sriramoju.">
+<meta name="theme-color" content="#0C0A07">
+<meta property="og:title" content="Advanced Scientific Calculator — Nikhil Chary Sriramoju">
+<meta property="og:description" content="Full-precision scientific calculator with history, deg/rad, Indian & International number formats — built by Nikhil Chary Sriramoju.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230C0A07'/%3E%3Ctext x='50' y='68' font-size='58' font-family='Georgia,serif' font-weight='bold' fill='%23D9AE52' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0C0A07;
+    --bg-panel: #16130D;
+    --grid-line: #2A2213;
+    --hairline: #3D3113;
+    --text: #F4EFE3;
+    --text-muted: #B8AC8E;
+    --gold: #D9AE52;
+    --gold-bright: #F0C674;
+    --gold-dim: #8C6A2F;
+    --focus: #F6D998;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: -1px -1px;
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--gold); color: #0C0A07;
+    padding: 12px 20px; z-index: 100; font-weight: 600; text-decoration: none;
+  }
+  .skip-link:focus { left: 16px; top: 16px; }
+
+  a { color: var(--gold-bright); }
+  a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- Header ---------- */
+  header.site-header {
+    border-bottom: 1px solid var(--hairline);
+    background: rgba(12, 10, 7, 0.88);
+    backdrop-filter: blur(6px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .site-header .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 14px; padding-bottom: 14px;
+  }
+  .site-header .mark { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); }
+  .site-header nav ul { list-style: none; display: flex; gap: 18px; margin: 0; padding: 0; }
+  .site-header nav a {
+    color: var(--text); text-decoration: none; font-size: 0.88rem;
+    border-bottom: 1px solid transparent; padding-bottom: 2px;
+  }
+  .site-header nav a:hover { border-bottom-color: var(--gold); }
+
+  /* ---------- Intro ---------- */
+  .intro {
+    margin-top: 36px;
+    opacity: 0; transform: translateY(6px);
+    animation: reveal 0.5s ease-out 0.05s forwards;
+  }
+  @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+  #calculator { opacity: 0; animation: reveal 0.5s ease-out 0.15s forwards; }
+  #support { opacity: 0; animation: reveal 0.5s ease-out 0.25s forwards; }
+  footer { opacity: 0; animation: reveal 0.5s ease-out 0.35s forwards; }
+  .eyebrow-field { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin: 0 0 8px; }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 6vw, 2.3rem);
+    line-height: 1.12; margin: 0 0 10px; font-weight: 600;
+    background: linear-gradient(100deg, var(--text) 40%, var(--gold-bright));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .role-line { font-size: 0.98rem; color: var(--text-muted); margin: 0 0 8px; }
+  .role-line a { color: var(--gold-bright); text-decoration: underline; text-decoration-color: var(--hairline); text-underline-offset: 3px; }
+
+  /* ---------- Sections ---------- */
+  .section { margin-top: 40px; }
+  .section-head {
+    display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px;
+    border-bottom: 1px solid var(--hairline); padding-bottom: 12px;
+  }
+  .section-head h2 { font-family: var(--font-display); font-size: 1.25rem; margin: 0; font-weight: 600; }
+  .section-head .tag { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+
+  /* ---------- Calculator ---------- */
+  .calc-wrap { border: 1px solid var(--hairline); background: var(--bg-panel); padding: 16px; }
+  .calc-shell {
+    max-width: 420px; margin: 0 auto; border: 1px solid var(--gold-dim); border-radius: 14px; padding: 16px;
+    background: linear-gradient(180deg, #1B160C, #100D08);
+    box-shadow: 0 0 0 1px rgba(217, 174, 82, 0.08), 0 20px 50px -20px rgba(0,0,0,0.6);
+  }
+  .calc-display {
+    background: #070604; border: 1px solid var(--hairline); border-radius: 8px;
+    padding: 16px 14px; margin-bottom: 12px; text-align: right; overflow: hidden;
+  }
+  .calc-expr { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); min-height: 17px; white-space: nowrap; overflow-x: auto; }
+  .calc-result { font-family: var(--font-display); font-size: 1.7rem; color: var(--gold-bright); min-height: 34px; white-space: nowrap; overflow-x: auto; }
+  .calc-mem-badge { font-family: var(--font-mono); font-size: 0.68rem; color: var(--gold); float: left; margin-top: 3px; }
+  .calc-display-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+  .copy-result-btn {
+    background: transparent; border: 1px solid var(--hairline); color: var(--text-muted);
+    border-radius: 6px; padding: 4px 9px; font-size: 0.68rem; cursor: pointer; font-family: var(--font-mono); flex-shrink: 0;
+  }
+  .copy-result-btn:hover { border-color: var(--gold); color: var(--gold-bright); }
+
+  .calc-modes { display: flex; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .mode-group { display: flex; gap: 6px; flex: 1; min-width: 130px; }
+  .mode-btn {
+    flex: 1; font-family: var(--font-mono); font-size: 0.68rem; background: transparent;
+    border: 1px solid var(--hairline); color: var(--text-muted); border-radius: 6px; padding: 6px 2px; cursor: pointer;
+  }
+  .mode-btn[aria-pressed="true"] { border-color: var(--gold); color: var(--gold-bright); background: rgba(217, 174, 82, 0.08); }
+
+  .calc-section-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); margin: 12px 0 6px; }
+  .calc-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+  .calc-keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-top: 6px; }
+
+  .calc-btn {
+    font-family: var(--font-body); font-size: 0.8rem; padding: 9px 0; border-radius: 7px;
+    border: 1px solid var(--hairline); background: #1D1710; color: var(--text); cursor: pointer;
+    transition: background 0.15s ease, transform 0.05s ease;
+  }
+  .calc-keypad .calc-btn { font-size: 0.95rem; padding: 14px 0; }
+  .calc-btn:hover { background: #29200F; }
+  .calc-btn:active { transform: scale(0.96); }
+  .calc-btn.fn { color: var(--text-muted); font-size: 0.68rem; }
+  .calc-keypad .calc-btn.fn { font-size: 0.85rem; }
+  .calc-btn.op { color: var(--gold-bright); border-color: var(--gold-dim); }
+  .calc-btn.mem { color: var(--gold); }
+  .calc-btn.equals {
+    grid-column: span 4;
+    background: linear-gradient(100deg, var(--gold-dim), var(--gold));
+    color: #14110A; font-weight: 600; border: none;
+  }
+  .calc-btn.equals:hover { background: linear-gradient(100deg, var(--gold), var(--gold-bright)); }
+  .calc-note { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-muted); margin-top: 12px; text-align: center; line-height: 1.5; }
+
+  /* ---------- History ---------- */
+  .history-panel { margin-top: 16px; border-top: 1px solid var(--hairline); padding-top: 12px; }
+  .history-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .history-head span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+  .history-clear { background: none; border: none; color: var(--text-muted); font-size: 0.7rem; text-decoration: underline; cursor: pointer; font-family: var(--font-mono); }
+  .history-clear:hover { color: var(--gold-bright); }
+  .history-list { list-style: none; margin: 0; padding: 0; max-height: 160px; overflow-y: auto; }
+  .history-list li { font-family: var(--font-mono); font-size: 0.76rem; padding: 6px 0; border-bottom: 1px solid var(--grid-line); }
+  .history-list button {
+    background: none; border: none; color: var(--text); text-align: left; width: 100%;
+    cursor: pointer; padding: 0; font-family: inherit; font-size: inherit;
+  }
+  .history-list button:hover { color: var(--gold-bright); }
+  .history-empty { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); }
+
+  /* ---------- Support / UPI ---------- */
+  .support-wrap {
+    border: 1px solid var(--gold-dim); background: linear-gradient(160deg, #1B160C 0%, #100D08 70%);
+    padding: 26px 22px; display: flex; gap: 22px; flex-wrap: wrap; align-items: center;
+  }
+  .support-info { flex: 1; min-width: 200px; }
+  .support-info h3 { font-family: var(--font-display); font-size: 1.1rem; margin: 0 0 8px; }
+  .support-info p { color: var(--text-muted); margin: 0 0 16px; font-size: 0.9rem; }
+  .upi-row {
+    display: flex; align-items: center; gap: 10px; border: 1px solid var(--hairline);
+    border-radius: 8px; padding: 10px 12px; background: rgba(217, 174, 82, 0.05); margin-bottom: 10px;
+  }
+  .upi-row code { font-family: var(--font-mono); font-size: 0.85rem; color: var(--gold-bright); flex: 1; word-break: break-all; }
+  .copy-btn {
+    background: transparent; border: 1px solid var(--gold-dim); color: var(--gold-bright);
+    border-radius: 6px; padding: 6px 12px; font-size: 0.76rem; cursor: pointer; font-family: var(--font-mono); white-space: nowrap;
+  }
+  .copy-btn:hover { border-color: var(--gold); background: rgba(217, 174, 82, 0.1); }
+  .upi-payee { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); margin: 0; }
+  .qr-box { text-align: center; flex-shrink: 0; }
+  #qrContainer {
+    width: 176px; height: 176px; background: #fff; border-radius: 10px;
+    border: 1px solid var(--hairline); padding: 10px; box-sizing: border-box;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #qrContainer svg { width: 100%; height: 100%; display: block; }
+  .qr-box p { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); margin-top: 8px; }
+
+  /* ---------- About the Builder footer ---------- */
+  footer { margin-top: 56px; padding: 0 0 56px; }
+  .builder-card { position: relative; border: 1px solid var(--gold-dim); background: linear-gradient(160deg, #1B160C 0%, #100D08 70%); padding: 32px 26px; overflow: hidden; }
+  .builder-card::before {
+    content: ""; position: absolute; inset: 0; padding: 1px; border-radius: inherit;
+    background: linear-gradient(120deg, transparent 30%, rgba(240, 198, 116, 0.5), transparent 70%);
+    background-size: 220% 220%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: shine 6s linear infinite; pointer-events: none;
+  }
+  @keyframes shine { 0% { background-position: 0% 0%; } 100% { background-position: 220% 220%; } }
+  .builder-eyebrow { font-family: var(--font-mono); font-size: 0.78rem; color: var(--gold-bright); margin: 0 0 10px; }
+  .builder-name { font-family: var(--font-display); font-size: clamp(1.4rem, 5vw, 1.9rem); font-weight: 700; margin: 0 0 6px; color: var(--text); }
+  .builder-role { color: var(--text-muted); margin: 0 0 20px; font-size: 0.95rem; }
+  .builder-links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .builder-links a {
+    display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-size: 0.9rem;
+    border: 1px solid var(--hairline); padding: 11px 13px; border-radius: 8px; background: rgba(217, 174, 82, 0.04);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .builder-links a:hover { border-color: var(--gold); background: rgba(217, 174, 82, 0.1); }
+  .builder-links .glyph { font-size: 1.05rem; flex-shrink: 0; }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 0 14px; }
+    .calc-wrap { padding: 10px; }
+    .calc-shell { padding: 12px; }
+    .calc-grid { grid-template-columns: repeat(4, 1fr); gap: 5px; }
+    .calc-btn.equals { grid-column: span 4; }
+    .calc-btn { font-size: 0.75rem; padding: 9px 0; }
+    .calc-keypad .calc-btn { font-size: 0.92rem; padding: 13px 0; }
+    .builder-card { padding: 26px 18px; }
+    .support-wrap { flex-direction: column; padding: 22px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <span class="mark">N. C. Sriramoju</span>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#calculator">Calculator</a></li>
+        <li><a href="#support">Support</a></li>
+        <li><a href="#builder">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <div class="intro">
+      <p class="eyebrow-field">Live tool</p>
+      <h1>Advanced Scientific Calculator</h1>
+      <p class="role-line">Built by <a href="#builder">Nikhil Chary Sriramoju</a> — full decimal precision, deg/rad, Indian &amp; International number formats, and session calculation history.</p>
+    </div>
+
+    <section class="section" id="calculator" aria-labelledby="calc-heading">
+      <div class="section-head">
+        <h2 id="calc-heading">Calculator</h2>
+        <span class="tag">live, client-side</span>
+      </div>
+      <div class="calc-wrap">
+        <div class="calc-shell">
+          <div class="calc-display">
+            <div class="calc-mem-badge" id="calcMemBadge" aria-hidden="true">&nbsp;</div>
+            <div class="calc-expr" id="calcExpr" aria-hidden="true">&nbsp;</div>
+            <div class="calc-display-row">
+              <div class="calc-result" id="calcResult" role="status" aria-live="polite">0</div>
+              <button class="copy-result-btn" id="copyResultBtn" type="button">Copy</button>
+            </div>
+          </div>
+
+          <div class="calc-modes">
+            <div class="mode-group" role="group" aria-label="Angle unit">
+              <button class="mode-btn" id="degBtn" aria-pressed="true" type="button">deg</button>
+              <button class="mode-btn" id="radBtn" aria-pressed="false" type="button">rad</button>
+            </div>
+            <div class="mode-group" role="group" aria-label="Number format">
+              <button class="mode-btn" id="inBtn" aria-pressed="true" type="button">in (lakh/crore)</button>
+              <button class="mode-btn" id="intlBtn" aria-pressed="false" type="button">intl (thousand)</button>
+            </div>
+          </div>
+
+          <p class="calc-section-label">functions</p>
+          <div class="calc-grid" id="calcFnGrid" role="group" aria-label="Scientific functions"></div>
+
+          <p class="calc-section-label">keypad</p>
+          <div class="calc-keypad" id="calcKeypad" role="group" aria-label="Number keypad"></div>
+
+          <p class="calc-note">mod(a,b), nCr(n,r) and nPr(n,r) take two comma-separated arguments, e.g. ncr(10,3). Ans recalls the last result.</p>
+
+          <div class="history-panel">
+            <div class="history-head">
+              <span>history</span>
+              <button class="history-clear" id="historyClear" type="button">clear</button>
+            </div>
+            <ul class="history-list" id="historyList">
+              <li class="history-empty">No calculations yet this session.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="support" aria-labelledby="support-heading">
+      <div class="section-head">
+        <h2 id="support-heading">Support this work</h2>
+        <span class="tag">UPI</span>
+      </div>
+      <div class="support-wrap">
+        <div class="support-info">
+          <h3>Buy me a coffee ☕</h3>
+          <p>If this calculator was useful to you, a small UPI contribution is always appreciated — but never expected.</p>
+          <div class="upi-row">
+            <code id="upiIdText">anuasriramoju-5@okaxis</code>
+            <button class="copy-btn" id="copyUpiBtn" type="button">Copy</button>
+          </div>
+          <p class="upi-payee">Payee: Nikhil Chary Sriramoju</p>
+        </div>
+        <div class="qr-box">
+          <div id="qrContainer" role="img" aria-label="QR code to pay Nikhil Chary Sriramoju via UPI at anuasriramoju-5@okaxis"></div>
+          <p>Scan with any UPI app</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer id="builder">
+    <div class="wrap">
+      <div class="builder-card">
+        <p class="builder-eyebrow">👤 About the builder</p>
+        <p class="builder-name">NIKHIL CHARY SRIRAMOJU</p>
+        <p class="builder-role">B.Tech Final Year — Computer Science &amp; Engineering</p>
+        <ul class="builder-links">
+          <li><a href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a"><span class="glyph" aria-hidden="true">🔗</span> LinkedIn: nikhil-chary-sriramoju</a></li>
+          <li><a href="https://github.com/Nikhil-creat"><span class="glyph" aria-hidden="true">💻</span> GitHub: Nikhil-creat</a></li>
+          <li><a href="mailto:sriramojunikhil66@gmail.com"><span class="glyph" aria-hidden="true">📧</span> sriramojunikhil66@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/nikhil__sriramoju"><span class="glyph" aria-hidden="true">📸</span> Instagram: nikhil__sriramoju</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script>
+/* =============================================================
+   QRCode for JavaScript — encoder only (no DOM rendering)
+   Copyright (c) 2009 Kazuhiko Arase, http://www.d-project.com/
+   Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+   The word "QR Code" is a registered trademark of DENSO WAVE INCORPORATED.
+   Bundled here so the payment QR renders fully offline, with no
+   external image/network dependency.
+============================================================= */
+function QR8bitByte(data) { this.mode = QRMode.MODE_8BIT_BYTE; this.data = data; }
+QR8bitByte.prototype = {
+  getLength: function () { return this.data.length; },
+  write: function (buffer) {
+    for (var i = 0; i < this.data.length; i++) { buffer.put(this.data.charCodeAt(i), 8); }
+  }
+};
+
+function QRCode(typeNumber, errorCorrectLevel) {
+  this.typeNumber = typeNumber;
+  this.errorCorrectLevel = errorCorrectLevel;
+  this.modules = null;
+  this.moduleCount = 0;
+  this.dataCache = null;
+  this.dataList = [];
+}
+QRCode.prototype = {
+  addData: function (data) { this.dataList.push(new QR8bitByte(data)); this.dataCache = null; },
+  isDark: function (row, col) {
+    if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) throw new Error(row + "," + col);
+    return this.modules[row][col];
+  },
+  getModuleCount: function () { return this.moduleCount; },
+  make: function () {
+    if (this.typeNumber < 1) {
+      var typeNumber = 1;
+      for (typeNumber = 1; typeNumber < 40; typeNumber++) {
+        var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, this.errorCorrectLevel);
+        var buffer = new QRBitBuffer();
+        var totalDataCount = 0;
+        for (var i = 0; i < rsBlocks.length; i++) totalDataCount += rsBlocks[i].dataCount;
+        for (var j = 0; j < this.dataList.length; j++) {
+          var data = this.dataList[j];
+          buffer.put(data.mode, 4);
+          buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber));
+          data.write(buffer);
+        }
+        if (buffer.getLengthInBits() <= totalDataCount * 8) break;
+      }
+      this.typeNumber = typeNumber;
+    }
+    this.makeImpl(false, this.getBestMaskPattern());
+  },
+  makeImpl: function (test, maskPattern) {
+    this.moduleCount = this.typeNumber * 4 + 17;
+    this.modules = new Array(this.moduleCount);
+    for (var row = 0; row < this.moduleCount; row++) {
+      this.modules[row] = new Array(this.moduleCount);
+      for (var col = 0; col < this.moduleCount; col++) this.modules[row][col] = null;
+    }
+    this.setupPositionProbePattern(0, 0);
+    this.setupPositionProbePattern(this.moduleCount - 7, 0);
+    this.setupPositionProbePattern(0, this.moduleCount - 7);
+    this.setupPositionAdjustPattern();
+    this.setupTimingPattern();
+    this.setupTypeInfo(test, maskPattern);
+    if (this.typeNumber >= 7) this.setupTypeNumber(test);
+    if (this.dataCache == null) this.dataCache = QRCode.createData(this.typeNumber, this.errorCorrectLevel, this.dataList);
+    this.mapData(this.dataCache, maskPattern);
+  },
+  setupPositionProbePattern: function (row, col) {
+    for (var r = -1; r <= 7; r++) {
+      if (row + r <= -1 || this.moduleCount <= row + r) continue;
+      for (var c = -1; c <= 7; c++) {
+        if (col + c <= -1 || this.moduleCount <= col + c) continue;
+        if ((0 <= r && r <= 6 && (c == 0 || c == 6)) || (0 <= c && c <= 6 && (r == 0 || r == 6)) || (2 <= r && r <= 4 && 2 <= c && c <= 4)) {
+          this.modules[row + r][col + c] = true;
+        } else { this.modules[row + r][col + c] = false; }
+      }
+    }
+  },
+  getBestMaskPattern: function () {
+    var minLostPoint = 0, pattern = 0;
+    for (var i = 0; i < 8; i++) {
+      this.makeImpl(true, i);
+      var lostPoint = QRUtil.getLostPoint(this);
+      if (i == 0 || minLostPoint > lostPoint) { minLostPoint = lostPoint; pattern = i; }
+    }
+    return pattern;
+  },
+  setupTimingPattern: function () {
+    for (var r = 8; r < this.moduleCount - 8; r++) { if (this.modules[r][6] != null) continue; this.modules[r][6] = (r % 2 == 0); }
+    for (var c = 8; c < this.moduleCount - 8; c++) { if (this.modules[6][c] != null) continue; this.modules[6][c] = (c % 2 == 0); }
+  },
+  setupPositionAdjustPattern: function () {
+    var pos = QRUtil.getPatternPosition(this.typeNumber);
+    for (var i = 0; i < pos.length; i++) {
+      for (var j = 0; j < pos.length; j++) {
+        var row = pos[i], col = pos[j];
+        if (this.modules[row][col] != null) continue;
+        for (var r = -2; r <= 2; r++) {
+          for (var c = -2; c <= 2; c++) {
+            if (r == -2 || r == 2 || c == -2 || c == 2 || (r == 0 && c == 0)) this.modules[row + r][col + c] = true;
+            else this.modules[row + r][col + c] = false;
+          }
+        }
+      }
+    }
+  },
+  setupTypeNumber: function (test) {
+    var bits = QRUtil.getBCHTypeNumber(this.typeNumber);
+    for (var i = 0; i < 18; i++) { var mod = (!test && ((bits >> i) & 1) == 1); this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod; }
+    for (var i2 = 0; i2 < 18; i2++) { var mod2 = (!test && ((bits >> i2) & 1) == 1); this.modules[i2 % 3 + this.moduleCount - 8 - 3][Math.floor(i2 / 3)] = mod2; }
+  },
+  setupTypeInfo: function (test, maskPattern) {
+    var data = (this.errorCorrectLevel << 3) | maskPattern;
+    var bits = QRUtil.getBCHTypeInfo(data);
+    for (var i = 0; i < 15; i++) {
+      var mod = (!test && ((bits >> i) & 1) == 1);
+      if (i < 6) this.modules[i][8] = mod;
+      else if (i < 8) this.modules[i + 1][8] = mod;
+      else this.modules[this.moduleCount - 15 + i][8] = mod;
+    }
+    for (var j = 0; j < 15; j++) {
+      var modj = (!test && ((bits >> j) & 1) == 1);
+      if (j < 8) this.modules[8][this.moduleCount - j - 1] = modj;
+      else if (j < 9) this.modules[8][15 - j - 1 + 1] = modj;
+      else this.modules[8][15 - j - 1] = modj;
+    }
+    this.modules[this.moduleCount - 8][8] = (!test);
+  },
+  mapData: function (data, maskPattern) {
+    var inc = -1, row = this.moduleCount - 1, bitIndex = 7, byteIndex = 0;
+    for (var col = this.moduleCount - 1; col > 0; col -= 2) {
+      if (col == 6) col--;
+      while (true) {
+        for (var c = 0; c < 2; c++) {
+          if (this.modules[row][col - c] == null) {
+            var dark = false;
+            if (byteIndex < data.length) dark = (((data[byteIndex] >>> bitIndex) & 1) == 1);
+            var mask = QRUtil.getMask(maskPattern, row, col - c);
+            if (mask) dark = !dark;
+            this.modules[row][col - c] = dark;
+            bitIndex--;
+            if (bitIndex == -1) { byteIndex++; bitIndex = 7; }
+          }
+        }
+        row += inc;
+        if (row < 0 || this.moduleCount <= row) { row -= inc; inc = -inc; break; }
+      }
+    }
+  }
+};
+QRCode.PAD0 = 0xEC; QRCode.PAD1 = 0x11;
+QRCode.createData = function (typeNumber, errorCorrectLevel, dataList) {
+  var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectLevel);
+  var buffer = new QRBitBuffer();
+  for (var i = 0; i < dataList.length; i++) {
+    var data = dataList[i];
+    buffer.put(data.mode, 4);
+    buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber));
+    data.write(buffer);
+  }
+  var totalDataCount = 0;
+  for (var r = 0; r < rsBlocks.length; r++) totalDataCount += rsBlocks[r].dataCount;
+  if (buffer.getLengthInBits() > totalDataCount * 8) throw new Error("code length overflow");
+  if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) buffer.put(0, 4);
+  while (buffer.getLengthInBits() % 8 != 0) buffer.putBit(false);
+  while (true) {
+    if (buffer.getLengthInBits() >= totalDataCount * 8) break;
+    buffer.put(QRCode.PAD0, 8);
+    if (buffer.getLengthInBits() >= totalDataCount * 8) break;
+    buffer.put(QRCode.PAD1, 8);
+  }
+  return QRCode.createBytes(buffer, rsBlocks);
+};
+QRCode.createBytes = function (buffer, rsBlocks) {
+  var offset = 0, maxDcCount = 0, maxEcCount = 0;
+  var dcdata = new Array(rsBlocks.length), ecdata = new Array(rsBlocks.length);
+  for (var r = 0; r < rsBlocks.length; r++) {
+    var dcCount = rsBlocks[r].dataCount, ecCount = rsBlocks[r].totalCount - dcCount;
+    maxDcCount = Math.max(maxDcCount, dcCount); maxEcCount = Math.max(maxEcCount, ecCount);
+    dcdata[r] = new Array(dcCount);
+    for (var i = 0; i < dcdata[r].length; i++) dcdata[r][i] = 0xff & buffer.buffer[i + offset];
+    offset += dcCount;
+    var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+    var rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
+    var modPoly = rawPoly.mod(rsPoly);
+    ecdata[r] = new Array(rsPoly.getLength() - 1);
+    for (var k = 0; k < ecdata[r].length; k++) {
+      var modIndex = k + modPoly.getLength() - ecdata[r].length;
+      ecdata[r][k] = (modIndex >= 0) ? modPoly.get(modIndex) : 0;
+    }
+  }
+  var totalCodeCount = 0;
+  for (var t = 0; t < rsBlocks.length; t++) totalCodeCount += rsBlocks[t].totalCount;
+  var data = new Array(totalCodeCount), index = 0;
+  for (var i2 = 0; i2 < maxDcCount; i2++) for (var r2 = 0; r2 < rsBlocks.length; r2++) if (i2 < dcdata[r2].length) data[index++] = dcdata[r2][i2];
+  for (var i3 = 0; i3 < maxEcCount; i3++) for (var r3 = 0; r3 < rsBlocks.length; r3++) if (i3 < ecdata[r3].length) data[index++] = ecdata[r3][i3];
+  return data;
+};
+
+var QRMode = { MODE_NUMBER: 1 << 0, MODE_ALPHA_NUM: 1 << 1, MODE_8BIT_BYTE: 1 << 2, MODE_KANJI: 1 << 3 };
+var QRErrorCorrectLevel = { L: 1, M: 0, Q: 3, H: 2 };
+var QRMaskPattern = { PATTERN000: 0, PATTERN001: 1, PATTERN010: 2, PATTERN011: 3, PATTERN100: 4, PATTERN101: 5, PATTERN110: 6, PATTERN111: 7 };
+
+var QRUtil = {
+  PATTERN_POSITION_TABLE: [[], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34], [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50], [6, 30, 54], [6, 32, 58], [6, 34, 62], [6, 26, 46, 66], [6, 26, 48, 70], [6, 26, 50, 74], [6, 30, 54, 78], [6, 30, 56, 82], [6, 30, 58, 86], [6, 34, 62, 90], [6, 28, 50, 72, 94], [6, 26, 50, 74, 98], [6, 30, 54, 78, 102], [6, 28, 54, 80, 106], [6, 32, 58, 84, 110], [6, 30, 58, 86, 114], [6, 34, 62, 90, 118], [6, 26, 50, 74, 98, 122], [6, 30, 54, 78, 102, 126], [6, 26, 52, 78, 104, 130], [6, 30, 56, 82, 108, 134], [6, 34, 60, 86, 112, 138], [6, 30, 58, 86, 114, 142], [6, 34, 62, 90, 118, 146], [6, 30, 54, 78, 102, 126, 150], [6, 24, 50, 76, 102, 128, 154], [6, 28, 54, 80, 106, 132, 158], [6, 32, 58, 84, 110, 136, 162], [6, 26, 54, 82, 110, 138, 166], [6, 30, 58, 86, 114, 142, 170]],
+  G15: (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+  G18: (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+  G15_MASK: (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1),
+  getBCHTypeInfo: function (data) {
+    var d = data << 10;
+    while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15)));
+    return ((data << 10) | d) ^ QRUtil.G15_MASK;
+  },
+  getBCHTypeNumber: function (data) {
+    var d = data << 12;
+    while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18)));
+    return (data << 12) | d;
+  },
+  getBCHDigit: function (data) { var digit = 0; while (data != 0) { digit++; data >>>= 1; } return digit; },
+  getPatternPosition: function (typeNumber) { return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1]; },
+  getMask: function (maskPattern, i, j) {
+    switch (maskPattern) {
+      case QRMaskPattern.PATTERN000: return (i + j) % 2 == 0;
+      case QRMaskPattern.PATTERN001: return i % 2 == 0;
+      case QRMaskPattern.PATTERN010: return j % 3 == 0;
+      case QRMaskPattern.PATTERN011: return (i + j) % 3 == 0;
+      case QRMaskPattern.PATTERN100: return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 == 0;
+      case QRMaskPattern.PATTERN101: return (i * j) % 2 + (i * j) % 3 == 0;
+      case QRMaskPattern.PATTERN110: return ((i * j) % 2 + (i * j) % 3) % 2 == 0;
+      case QRMaskPattern.PATTERN111: return ((i * j) % 3 + (i + j) % 2) % 2 == 0;
+      default: throw new Error("bad maskPattern:" + maskPattern);
+    }
+  },
+  getErrorCorrectPolynomial: function (errorCorrectLength) {
+    var a = new QRPolynomial([1], 0);
+    for (var i = 0; i < errorCorrectLength; i++) a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0));
+    return a;
+  },
+  getLengthInBits: function (mode, type) {
+    if (1 <= type && type < 10) {
+      switch (mode) { case QRMode.MODE_NUMBER: return 10; case QRMode.MODE_ALPHA_NUM: return 9; case QRMode.MODE_8BIT_BYTE: return 8; case QRMode.MODE_KANJI: return 8; default: throw new Error("mode:" + mode); }
+    } else if (type < 27) {
+      switch (mode) { case QRMode.MODE_NUMBER: return 12; case QRMode.MODE_ALPHA_NUM: return 11; case QRMode.MODE_8BIT_BYTE: return 16; case QRMode.MODE_KANJI: return 10; default: throw new Error("mode:" + mode); }
+    } else if (type < 41) {
+      switch (mode) { case QRMode.MODE_NUMBER: return 14; case QRMode.MODE_ALPHA_NUM: return 13; case QRMode.MODE_8BIT_BYTE: return 16; case QRMode.MODE_KANJI: return 12; default: throw new Error("mode:" + mode); }
+    } else { throw new Error("type:" + type); }
+  },
+  getLostPoint: function (qrCode) {
+    var moduleCount = qrCode.getModuleCount(), lostPoint = 0;
+    for (var row = 0; row < moduleCount; row++) {
+      for (var col = 0; col < moduleCount; col++) {
+        var sameCount = 0, dark = qrCode.isDark(row, col);
+        for (var r = -1; r <= 1; r++) {
+          if (row + r < 0 || moduleCount <= row + r) continue;
+          for (var c = -1; c <= 1; c++) {
+            if (col + c < 0 || moduleCount <= col + c) continue;
+            if (r == 0 && c == 0) continue;
+            if (dark == qrCode.isDark(row + r, col + c)) sameCount++;
+          }
+        }
+        if (sameCount > 5) lostPoint += (3 + sameCount - 5);
+      }
+    }
+    for (var row2 = 0; row2 < moduleCount - 1; row2++) {
+      for (var col2 = 0; col2 < moduleCount - 1; col2++) {
+        var count = 0;
+        if (qrCode.isDark(row2, col2)) count++;
+        if (qrCode.isDark(row2 + 1, col2)) count++;
+        if (qrCode.isDark(row2, col2 + 1)) count++;
+        if (qrCode.isDark(row2 + 1, col2 + 1)) count++;
+        if (count == 0 || count == 4) lostPoint += 3;
+      }
+    }
+    for (var row3 = 0; row3 < moduleCount; row3++) {
+      for (var col3 = 0; col3 < moduleCount - 6; col3++) {
+        if (qrCode.isDark(row3, col3) && !qrCode.isDark(row3, col3 + 1) && qrCode.isDark(row3, col3 + 2) && qrCode.isDark(row3, col3 + 3) && qrCode.isDark(row3, col3 + 4) && !qrCode.isDark(row3, col3 + 5) && qrCode.isDark(row3, col3 + 6)) lostPoint += 40;
+      }
+    }
+    for (var col4 = 0; col4 < moduleCount; col4++) {
+      for (var row4 = 0; row4 < moduleCount - 6; row4++) {
+        if (qrCode.isDark(row4, col4) && !qrCode.isDark(row4 + 1, col4) && qrCode.isDark(row4 + 2, col4) && qrCode.isDark(row4 + 3, col4) && qrCode.isDark(row4 + 4, col4) && !qrCode.isDark(row4 + 5, col4) && qrCode.isDark(row4 + 6, col4)) lostPoint += 40;
+      }
+    }
+    var darkCount = 0;
+    for (var col5 = 0; col5 < moduleCount; col5++) for (var row5 = 0; row5 < moduleCount; row5++) if (qrCode.isDark(row5, col5)) darkCount++;
+    var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+    lostPoint += ratio * 10;
+    return lostPoint;
+  }
+};
+
+var QRMath = {
+  glog: function (n) { if (n < 1) throw new Error("glog(" + n + ")"); return QRMath.LOG_TABLE[n]; },
+  gexp: function (n) { while (n < 0) n += 255; while (n >= 256) n -= 255; return QRMath.EXP_TABLE[n]; },
+  EXP_TABLE: new Array(256), LOG_TABLE: new Array(256)
+};
+for (var qi = 0; qi < 8; qi++) QRMath.EXP_TABLE[qi] = 1 << qi;
+for (var qj = 8; qj < 256; qj++) QRMath.EXP_TABLE[qj] = QRMath.EXP_TABLE[qj - 4] ^ QRMath.EXP_TABLE[qj - 5] ^ QRMath.EXP_TABLE[qj - 6] ^ QRMath.EXP_TABLE[qj - 8];
+for (var qk = 0; qk < 255; qk++) QRMath.LOG_TABLE[QRMath.EXP_TABLE[qk]] = qk;
+
+function QRPolynomial(num, shift) {
+  if (num.length == undefined) throw new Error(num.length + "/" + shift);
+  var offset = 0;
+  while (offset < num.length && num[offset] == 0) offset++;
+  this.num = new Array(num.length - offset + shift);
+  for (var i = 0; i < num.length - offset; i++) this.num[i] = num[i + offset];
+}
+QRPolynomial.prototype = {
+  get: function (index) { return this.num[index]; },
+  getLength: function () { return this.num.length; },
+  multiply: function (e) {
+    var num = new Array(this.getLength() + e.getLength() - 1);
+    for (var i = 0; i < this.getLength(); i++) for (var j = 0; j < e.getLength(); j++) num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i)) + QRMath.glog(e.get(j)));
+    return new QRPolynomial(num, 0);
+  },
+  mod: function (e) {
+    if (this.getLength() - e.getLength() < 0) return this;
+    var ratio = QRMath.glog(this.get(0)) - QRMath.glog(e.get(0));
+    var num = new Array(this.getLength());
+    for (var i = 0; i < this.getLength(); i++) num[i] = this.get(i);
+    for (var j = 0; j < e.getLength(); j++) num[j] ^= QRMath.gexp(QRMath.glog(e.get(j)) + ratio);
+    return new QRPolynomial(num, 0).mod(e);
+  }
+};
+
+function QRRSBlock(totalCount, dataCount) { this.totalCount = totalCount; this.dataCount = dataCount; }
+QRRSBlock.RS_BLOCK_TABLE = [[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]];
+QRRSBlock.getRSBlocks = function (typeNumber, errorCorrectLevel) {
+  var rsBlock = QRRSBlock.getRsBlockTable(typeNumber, errorCorrectLevel);
+  if (rsBlock == undefined) throw new Error("bad rs block");
+  var length = rsBlock.length / 3, list = [];
+  for (var i = 0; i < length; i++) {
+    var count = rsBlock[i * 3], totalCount = rsBlock[i * 3 + 1], dataCount = rsBlock[i * 3 + 2];
+    for (var j = 0; j < count; j++) list.push(new QRRSBlock(totalCount, dataCount));
+  }
+  return list;
+};
+QRRSBlock.getRsBlockTable = function (typeNumber, errorCorrectLevel) {
+  switch (errorCorrectLevel) {
+    case QRErrorCorrectLevel.L: return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+    case QRErrorCorrectLevel.M: return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+    case QRErrorCorrectLevel.Q: return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+    case QRErrorCorrectLevel.H: return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+    default: return undefined;
+  }
+};
+
+function QRBitBuffer() { this.buffer = []; this.length = 0; }
+QRBitBuffer.prototype = {
+  get: function (index) { var bufIndex = Math.floor(index / 8); return ((this.buffer[bufIndex] >>> (7 - index % 8)) & 1) == 1; },
+  put: function (num, length) { for (var i = 0; i < length; i++) this.putBit(((num >>> (length - i - 1)) & 1) == 1); },
+  getLengthInBits: function () { return this.length; },
+  putBit: function (bit) {
+    var bufIndex = Math.floor(this.length / 8);
+    if (this.buffer.length <= bufIndex) this.buffer.push(0);
+    if (bit) this.buffer[bufIndex] |= (0x80 >>> (this.length % 8));
+    this.length++;
+  }
+};
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  /* =========================================================
+     Expression parser & evaluator
+  ========================================================= */
+  function tokenize(str) {
+    const tokens = [];
+    let i = 0;
+    while (i < str.length) {
+      const c = str[i];
+      if (/\s/.test(c)) { i++; continue; }
+      if (/[0-9.]/.test(c)) {
+        let num = c; i++;
+        while (i < str.length && /[0-9.]/.test(str[i])) { num += str[i]; i++; }
+        tokens.push({ type: "num", value: parseFloat(num) });
+        continue;
+      }
+      if (/[a-zA-Z]/.test(c)) {
+        let name = c; i++;
+        while (i < str.length && /[a-zA-Z]/.test(str[i])) { name += str[i]; i++; }
+        tokens.push({ type: "id", value: name });
+        continue;
+      }
+      if ("+-*/^()!%,".includes(c)) { tokens.push({ type: "op", value: c }); i++; continue; }
+      throw new Error("Unexpected character: " + c);
+    }
+    return tokens;
+  }
+
+  const UNARY_FUNCTIONS = ["sin", "cos", "tan", "asin", "acos", "atan", "sinh", "cosh", "tanh", "log", "ln", "sqrt", "cbrt", "abs", "exp"];
+  const BINARY_FUNCTIONS = ["mod", "ncr", "npr", "gcd", "lcm"];
+  const CONSTANTS = { pi: Math.PI, e: Math.E };
+
+  let lastAnswer = 0;
+  let memoryValue = 0;
+
+  function Parser(tokens, degreeMode) { this.tokens = tokens; this.pos = 0; this.degreeMode = degreeMode; }
+  Parser.prototype.peek = function () { return this.tokens[this.pos]; };
+  Parser.prototype.next = function () { return this.tokens[this.pos++]; };
+
+  Parser.prototype.parseExpression = function () {
+    let value = this.parseTerm();
+    while (this.peek() && this.peek().type === "op" && (this.peek().value === "+" || this.peek().value === "-")) {
+      const op = this.next().value;
+      const rhs = this.parseTerm();
+      value = op === "+" ? value + rhs : value - rhs;
+    }
+    return value;
+  };
+  Parser.prototype.parseTerm = function () {
+    let value = this.parseFactor();
+    while (this.peek() && this.peek().type === "op" && (this.peek().value === "*" || this.peek().value === "/")) {
+      const op = this.next().value;
+      const rhs = this.parseFactor();
+      value = op === "*" ? value * rhs : value / rhs;
+    }
+    return value;
+  };
+  Parser.prototype.parseFactor = function () {
+    const base = this.parseUnary();
+    if (this.peek() && this.peek().type === "op" && this.peek().value === "^") {
+      this.next();
+      const exponent = this.parseFactor();
+      return Math.pow(base, exponent);
+    }
+    return base;
+  };
+  Parser.prototype.parseUnary = function () {
+    if (this.peek() && this.peek().type === "op" && (this.peek().value === "-" || this.peek().value === "+")) {
+      const op = this.next().value;
+      const val = this.parseUnary();
+      return op === "-" ? -val : val;
+    }
+    return this.parsePostfix();
+  };
+  Parser.prototype.parsePostfix = function () {
+    let value = this.parsePrimary();
+    while (this.peek() && this.peek().type === "op" && (this.peek().value === "!" || this.peek().value === "%")) {
+      const op = this.next().value;
+      value = op === "!" ? factorial(value) : value / 100;
+    }
+    return value;
+  };
+  Parser.prototype.parseArgs = function () {
+    const args = [this.parseExpression()];
+    while (this.peek() && this.peek().value === ",") { this.next(); args.push(this.parseExpression()); }
+    return args;
+  };
+  Parser.prototype.parsePrimary = function () {
+    const tok = this.peek();
+    if (!tok) throw new Error("Unexpected end of expression");
+    if (tok.type === "num") { this.next(); return tok.value; }
+    if (tok.type === "op" && tok.value === "(") {
+      this.next();
+      const val = this.parseExpression();
+      if (!(this.peek() && this.peek().value === ")")) throw new Error("Expected )");
+      this.next();
+      return val;
+    }
+    if (tok.type === "id") {
+      const name = tok.value.toLowerCase();
+      this.next();
+      if (name === "ans") return lastAnswer;
+      if (CONSTANTS.hasOwnProperty(name)) return CONSTANTS[name];
+      if (UNARY_FUNCTIONS.includes(name) || BINARY_FUNCTIONS.includes(name)) {
+        if (!(this.peek() && this.peek().value === "(")) throw new Error("Expected ( after " + name);
+        this.next();
+        const args = this.parseArgs();
+        if (!(this.peek() && this.peek().value === ")")) throw new Error("Expected )");
+        this.next();
+        if (UNARY_FUNCTIONS.includes(name)) return applyUnary(name, args[0], this.degreeMode);
+        return applyBinary(name, args[0], args[1]);
+      }
+      throw new Error("Unknown identifier: " + name);
+    }
+    throw new Error("Unexpected token: " + tok.value);
+  };
+
+  function factorial(n) {
+    if (n < 0 || !Number.isFinite(n)) return NaN;
+    if (Math.abs(n - Math.round(n)) > 1e-9) return NaN;
+    n = Math.round(n);
+    let result = 1;
+    for (let i = 2; i <= n; i++) result *= i;
+    return result;
+  }
+
+  function applyUnary(name, arg, degreeMode) {
+    const toRad = (v) => (degreeMode ? (v * Math.PI) / 180 : v);
+    const fromRad = (v) => (degreeMode ? (v * 180) / Math.PI : v);
+    switch (name) {
+      case "sin": return Math.sin(toRad(arg));
+      case "cos": return Math.cos(toRad(arg));
+      case "tan": return Math.tan(toRad(arg));
+      case "asin": return fromRad(Math.asin(arg));
+      case "acos": return fromRad(Math.acos(arg));
+      case "atan": return fromRad(Math.atan(arg));
+      case "sinh": return Math.sinh(arg);
+      case "cosh": return Math.cosh(arg);
+      case "tanh": return Math.tanh(arg);
+      case "log": return Math.log10(arg);
+      case "ln": return Math.log(arg);
+      case "sqrt": return Math.sqrt(arg);
+      case "cbrt": return Math.cbrt(arg);
+      case "abs": return Math.abs(arg);
+      case "exp": return Math.exp(arg);
+      default: return NaN;
+    }
+  }
+  function gcd(a, b) {
+    a = Math.abs(Math.round(a)); b = Math.abs(Math.round(b));
+    while (b) { const t = b; b = a % b; a = t; }
+    return a;
+  }
+  function applyBinary(name, a, b) {
+    switch (name) {
+      case "mod": return ((a % b) + b) % b;
+      case "ncr": return factorial(a) / (factorial(b) * factorial(a - b));
+      case "npr": return factorial(a) / factorial(a - b);
+      case "gcd": return gcd(a, b);
+      case "lcm": return Math.abs(a * b) / gcd(a, b);
+      default: return NaN;
+    }
+  }
+
+  function evaluate(expr, degreeMode) {
+    const tokens = tokenize(expr);
+    const parser = new Parser(tokens, degreeMode);
+    const value = parser.parseExpression();
+    if (parser.pos !== tokens.length) throw new Error("Unexpected trailing input");
+    return value;
+  }
+
+  function formatResult(num, numberStyle) {
+    if (!Number.isFinite(num)) return "Error";
+    const abs = Math.abs(num);
+    if (abs !== 0 && (abs >= 1e15 || abs < 1e-9)) return num.toExponential(6);
+    const rounded = parseFloat(num.toPrecision(12));
+    const locale = numberStyle === "indian" ? "en-IN" : "en-US";
+    try { return rounded.toLocaleString(locale, { maximumFractionDigits: 8, useGrouping: true }); }
+    catch (e) { return rounded.toString(); }
+  }
+
+  /* =========================================================
+     UI wiring
+  ========================================================= */
+  const exprEl = document.getElementById("calcExpr");
+  const resultEl = document.getElementById("calcResult");
+  const memBadgeEl = document.getElementById("calcMemBadge");
+  const fnGridEl = document.getElementById("calcFnGrid");
+  const keypadEl = document.getElementById("calcKeypad");
+  const degBtn = document.getElementById("degBtn");
+  const radBtn = document.getElementById("radBtn");
+  const inBtn = document.getElementById("inBtn");
+  const intlBtn = document.getElementById("intlBtn");
+  const historyListEl = document.getElementById("historyList");
+  const historyClearBtn = document.getElementById("historyClear");
+
+  let buffer = "";
+  let degreeMode = true;
+  let numberStyle = "indian";
+  let history = [];
+  let lastDisplayedValue = 0;
+
+  const FN_BUTTONS = [
+    { label: "MC", action: "mc", cls: "mem" }, { label: "MR", action: "mr", cls: "mem" },
+    { label: "M+", action: "mplus", cls: "mem" }, { label: "M−", action: "mminus", cls: "mem" },
+    { label: "MS", action: "ms", cls: "mem" }, { label: "Rand", action: "rand", cls: "fn" },
+
+    { label: "sin", insert: "sin(", cls: "fn" }, { label: "cos", insert: "cos(", cls: "fn" },
+    { label: "tan", insert: "tan(", cls: "fn" }, { label: "asin", insert: "asin(", cls: "fn" },
+    { label: "acos", insert: "acos(", cls: "fn" }, { label: "atan", insert: "atan(", cls: "fn" },
+
+    { label: "sinh", insert: "sinh(", cls: "fn" }, { label: "cosh", insert: "cosh(", cls: "fn" },
+    { label: "tanh", insert: "tanh(", cls: "fn" }, { label: "log", insert: "log(", cls: "fn" },
+    { label: "ln", insert: "ln(", cls: "fn" }, { label: "√", insert: "sqrt(", cls: "fn" },
+
+    { label: "∛", insert: "cbrt(", cls: "fn" }, { label: "x²", insert: "^2", cls: "op" },
+    { label: "x³", insert: "^3", cls: "op" }, { label: "1/x", insert: "^(-1)", cls: "op" },
+    { label: "^", insert: "^", cls: "op" }, { label: "!", insert: "!", cls: "op" },
+
+    { label: "nCr", insert: "ncr(", cls: "fn" }, { label: "nPr", insert: "npr(", cls: "fn" },
+    { label: "mod", insert: "mod(", cls: "fn" }, { label: "π", insert: "pi" },
+    { label: "e", insert: "e" }, { label: "Ans", insert: "ans", cls: "op" },
+
+    { label: "gcd", insert: "gcd(", cls: "fn" }, { label: "lcm", insert: "lcm(", cls: "fn" },
+    { label: "EE", insert: "*10^", cls: "op" }, { label: "10ˣ", insert: "10^(", cls: "fn" },
+    { label: "eˣ", insert: "exp(", cls: "fn" }, { label: "abs", insert: "abs(", cls: "fn" },
+  ];
+
+  const KEYPAD_BUTTONS = [
+    { label: "7", insert: "7" }, { label: "8", insert: "8" }, { label: "9", insert: "9" }, { label: "÷", insert: "/", cls: "op" },
+    { label: "4", insert: "4" }, { label: "5", insert: "5" }, { label: "6", insert: "6" }, { label: "×", insert: "*", cls: "op" },
+    { label: "1", insert: "1" }, { label: "2", insert: "2" }, { label: "3", insert: "3" }, { label: "−", insert: "-", cls: "op" },
+    { label: "0", insert: "0" }, { label: ".", insert: "." }, { label: "(", insert: "(" }, { label: ")", insert: ")" },
+    { label: "C", action: "clear", cls: "fn" }, { label: "⌫", action: "back", cls: "fn" },
+    { label: "%", insert: "%", cls: "op" }, { label: "+", insert: "+", cls: "op" },
+    { label: "=", action: "equals", cls: "equals", span: 4 },
+  ];
+
+  function ariaLabelFor(label) {
+    const names = { "÷": "divide", "×": "multiply", "−": "minus", "√": "square root", "∛": "cube root", "^": "power", "!": "factorial", "π": "pi", "=": "equals", "⌫": "backspace", "x²": "x squared", "x³": "x cubed", "1/x": "reciprocal", "M−": "memory minus", "10ˣ": "10 to the power of x", "eˣ": "e to the power of x", "EE": "times 10 to the power" };
+    return names[label] || label;
+  }
+
+  function buildButtons(list, container) {
+    list.forEach((b) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "calc-btn" + (b.cls ? " " + b.cls : "");
+      btn.textContent = b.label;
+      if (b.span) btn.style.gridColumn = "span " + b.span;
+      btn.setAttribute("aria-label", ariaLabelFor(b.label));
+      btn.addEventListener("click", () => handlePress(b));
+      container.appendChild(btn);
+    });
+  }
+  buildButtons(FN_BUTTONS, fnGridEl);
+  buildButtons(KEYPAD_BUTTONS, keypadEl);
+
+  function handlePress(b) {
+    switch (b.action) {
+      case "clear": buffer = ""; renderExpr(); updateDisplay("0"); return;
+      case "back": buffer = buffer.slice(0, -1); renderExpr(); return;
+      case "equals": compute(); return;
+      case "mc": memoryValue = 0; updateMemBadge(); return;
+      case "mr": buffer += formatRaw(memoryValue); renderExpr(); return;
+      case "mplus": memoryValue += lastDisplayedValue; updateMemBadge(); return;
+      case "mminus": memoryValue -= lastDisplayedValue; updateMemBadge(); return;
+      case "ms": memoryValue = lastDisplayedValue; updateMemBadge(); return;
+      case "rand": buffer += formatRaw(Math.random()); renderExpr(); return;
+      default: buffer += b.insert; renderExpr();
+    }
+  }
+
+  function formatRaw(num) { return parseFloat(num.toPrecision(10)).toString(); }
+  function renderExpr() { exprEl.textContent = prettify(buffer) || "\u00A0"; }
+  function prettify(str) { return str.replace(/\*/g, "×").replace(/\//g, "÷"); }
+  function updateMemBadge() { memBadgeEl.textContent = memoryValue !== 0 ? "M = " + formatRaw(memoryValue) : "\u00A0"; }
+
+  function compute() {
+    if (!buffer.trim()) return;
+    try {
+      const value = evaluate(buffer, degreeMode);
+      lastAnswer = value;
+      lastDisplayedValue = value;
+      const displayText = formatResult(value, numberStyle);
+      updateDisplay(displayText);
+      addHistory(buffer, displayText);
+    } catch (err) { updateDisplay("Error"); }
+  }
+  function updateDisplay(text) { resultEl.textContent = text; }
+
+  function addHistory(expr, result) {
+    history.unshift({ expr: prettify(expr), result });
+    if (history.length > 25) history.pop();
+    renderHistory();
+  }
+  function renderHistory() {
+    historyListEl.innerHTML = "";
+    if (history.length === 0) {
+      const li = document.createElement("li");
+      li.className = "history-empty";
+      li.textContent = "No calculations yet this session.";
+      historyListEl.appendChild(li);
+      return;
+    }
+    history.forEach((entry) => {
+      const li = document.createElement("li");
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = entry.expr + " = " + entry.result;
+      btn.addEventListener("click", () => { buffer = entry.result.replace(/,/g, ""); renderExpr(); });
+      li.appendChild(btn);
+      historyListEl.appendChild(li);
+    });
+  }
+  historyClearBtn.addEventListener("click", () => { history = []; renderHistory(); });
+
+  degBtn.addEventListener("click", () => setAngleMode(true));
+  radBtn.addEventListener("click", () => setAngleMode(false));
+  function setAngleMode(isDegree) {
+    degreeMode = isDegree;
+    degBtn.setAttribute("aria-pressed", String(isDegree));
+    radBtn.setAttribute("aria-pressed", String(!isDegree));
+  }
+  inBtn.addEventListener("click", () => setNumberStyle("indian"));
+  intlBtn.addEventListener("click", () => setNumberStyle("international"));
+  function setNumberStyle(style) {
+    numberStyle = style;
+    inBtn.setAttribute("aria-pressed", String(style === "indian"));
+    intlBtn.setAttribute("aria-pressed", String(style === "international"));
+    if (resultEl.textContent !== "0" && resultEl.textContent !== "Error") {
+      resultEl.textContent = formatResult(lastDisplayedValue, numberStyle);
+    }
+  }
+
+  document.addEventListener("keydown", (e) => {
+    const calcSection = document.getElementById("calculator");
+    if (!calcSection.contains(document.activeElement) && document.activeElement !== document.body) return;
+    if (/^[0-9.+\-*/^()%,]$/.test(e.key)) { buffer += e.key; renderExpr(); }
+    else if (e.key === "Enter" || e.key === "=") { e.preventDefault(); compute(); }
+    else if (e.key === "Backspace") { buffer = buffer.slice(0, -1); renderExpr(); }
+    else if (e.key === "Escape") { buffer = ""; updateDisplay("0"); renderExpr(); }
+  });
+
+  updateDisplay("0");
+  updateMemBadge();
+
+  /* =========================================================
+     UPI QR code — rendered fully offline via the bundled encoder
+  ========================================================= */
+  function renderQrSvg(containerId, text) {
+    const qr = new QRCode(0, QRErrorCorrectLevel.M);
+    qr.addData(text);
+    qr.make();
+    const count = qr.getModuleCount();
+    const margin = 4;
+    const size = count + margin * 2;
+    let rects = "";
+    for (let r = 0; r < count; r++) {
+      for (let c = 0; c < count; c++) {
+        if (qr.isDark(r, c)) rects += `<rect x="${c + margin}" y="${r + margin}" width="1" height="1"/>`;
+      }
+    }
+    const svg = `<svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+      <rect width="${size}" height="${size}" fill="#ffffff"/>
+      <g fill="#0C0A07">${rects}</g>
+    </svg>`;
+    document.getElementById(containerId).innerHTML = svg;
+  }
+
+  const UPI_ID = "anuasriramoju-5@okaxis";
+  const PAYEE_NAME = "Nikhil Chary Sriramoju";
+  const upiUri = "upi://pay?pa=" + encodeURIComponent(UPI_ID) + "&pn=" + encodeURIComponent(PAYEE_NAME) + "&cu=INR";
+  renderQrSvg("qrContainer", upiUri);
+
+  const copyBtn = document.getElementById("copyUpiBtn");
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(UPI_ID);
+      copyBtn.textContent = "Copied";
+      setTimeout(() => { copyBtn.textContent = "Copy"; }, 1800);
+    } catch (e) {
+      copyBtn.textContent = "Copy failed";
+      setTimeout(() => { copyBtn.textContent = "Copy"; }, 1800);
+    }
+  });
+
+  const copyResultBtn = document.getElementById("copyResultBtn");
+  copyResultBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(resultEl.textContent);
+      copyResultBtn.textContent = "Copied";
+      setTimeout(() => { copyResultBtn.textContent = "Copy"; }, 1500);
+    } catch (e) {
+      copyResultBtn.textContent = "Failed";
+      setTimeout(() => { copyResultBtn.textContent = "Copy"; }, 1500);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
